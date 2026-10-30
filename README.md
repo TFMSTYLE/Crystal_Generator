@@ -3,7 +3,7 @@
 ![crystal-thumb](https://github.com/user-attachments/assets/56993ade-dc53-4a74-8087-92e69ec4dabe)
 
 **Author:** The French Monkey (TFMSTYLE)  
-**Version:** 1.0.1  
+**Version:** 1.0.2  
 
 ---
 

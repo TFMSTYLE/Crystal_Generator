@@ -4,7 +4,7 @@
 bl_info = {
     "name": "Crystal",
     "author": "The French Monkey",
-    "version": (1, 0, 1),
+    "version": (1, 0, 2),
     "blender": (4, 2, 0),
     "location": "View3D > Sidebar > Crystal",
     "description": "Generate parametric crystal clusters",
@@ -15,6 +15,11 @@ bl_info = {
 import bpy, bmesh, random, math
 from math import sin, cos, tau
 from mathutils import Matrix, Vector, Euler
+
+try:
+    from . import relay_updater
+except ImportError:  # the Addon Collection has its own updates
+    relay_updater = None
 
 # ------------------------------------------------------------------------
 # Utilities
@@ -298,6 +303,8 @@ class VIEW3D_PT_crystal_generator(bpy.types.Panel):
     bl_category = "Crystal"
 
     def draw(self, context):
+        if relay_updater:
+            relay_updater.draw(self.layout)
         layout = self.layout
         p = context.scene.crystalgen_props
         o = context.object
@@ -354,11 +361,15 @@ classes = (
 )
 
 def register():
+    if relay_updater:
+        relay_updater.register("blender-crystal")
     for c in classes:
         bpy.utils.register_class(c)
     bpy.types.Scene.crystalgen_props = bpy.props.PointerProperty(type=CrystalGenProperties)
 
 def unregister():
+    if relay_updater:
+        relay_updater.unregister()
     for c in reversed(classes):
         bpy.utils.unregister_class(c)
     del bpy.types.Scene.crystalgen_props
